@@ -33,24 +33,78 @@ Sistema de usuarios con roles (administrador y usuario) implementado en CodeIgni
 
 ## 🛠️ Instrucciones de Instalación
 
-### 1. Configurar Base de Datos
+### 1. Clonar el Repositorio
+```bash
+git clone [URL_DEL_REPOSITORIO]
+cd Migraciones-semillas
+```
+
+### 2. Instalar Dependencias
+```bash
+composer install
+```
+
+### 3. Configurar Base de Datos
 1. Crear la base de datos `miapp` en MySQL
-2. Configurar las credenciales de la base de datos en `.env`:
+2. Copiar `env.example` a `.env`
+3. Configurar las credenciales de la base de datos en `.env`:
    ```
    database.default.hostname = localhost
    database.default.database = miapp
    database.default.username = root
-   database.default.password = 
+   database.default.password = tu_password
    ```
 
-### 2. Ejecutar Migraciones
+### 4. Ejecutar Migraciones
 ```bash
 php spark migrate
 ```
 
-### 3. Ejecutar Semillas
+### 5. Ejecutar Semillas
 ```bash
 php spark db:seed UsuariosSeeder
+```
+
+### 6. Configurar Servidor Web
+- **Apache/Nginx:** Apuntar al directorio `public/`
+- **Laragon:** Crear virtual host apuntando a `public/`
+- **XAMPP:** Mover contenido de `public/` a `htdocs/`
+
+### 7. Acceder al Sistema
+
+#### 🖥️ **Laragon (Windows)**
+```
+URL: http://Migraciones-semillas.test/
+```
+
+#### 🐧 **XAMPP**
+```
+URL: http://localhost/Migraciones-semillas/
+```
+
+#### 🐧 **Apache/Nginx**
+```
+URL: http://tu-dominio/
+```
+
+### 8. URLs de Acceso
+- **Página Principal:** `http://[nombre-carpeta]/`
+- **Iniciar Sesión:** `http://[nombre-carpeta]/identificacion/iniciar-sesion`
+- **Registrarse:** `http://[nombre-carpeta]/identificacion/registrarse`
+- **Bienvenida:** `http://[nombre-carpeta]/welcome`
+
+### 📝 **Ejemplo Simple**
+```bash
+# 1. Clonar
+git clone https://github.com/tu-usuario/Migraciones-semillas.git
+
+# 2. Mover a directorio web
+# Laragon: C:\laragon\www\Migraciones-semillas\
+# XAMPP: C:\xampp\htdocs\Migraciones-semillas\
+
+# 3. Acceder
+# Laragon: http://Migraciones-semillas.test/
+# XAMPP: http://localhost/Migraciones-semillas/
 ```
 
 ## 👥 Usuarios por Defecto
@@ -104,6 +158,43 @@ php spark db:seed UsuariosSeeder
 - Validación CSRF en formularios
 - Verificación de permisos por rol
 - Validación de archivos de avatar
+
+## 🔧 Solución de Problemas
+
+### ❌ **Error 404 - Ruta no encontrada**
+```bash
+# Limpiar cache de rutas
+php spark cache:clear
+```
+
+### ❌ **Error de Base de Datos**
+```bash
+# Verificar conexión
+php spark db:show
+
+# Recrear base de datos
+php spark migrate:rollback
+php spark migrate
+php spark db:seed UsuariosSeeder
+```
+
+### ❌ **Error de Permisos (Linux/Mac)**
+```bash
+# Dar permisos a directorios
+chmod -R 755 writable/
+chmod -R 755 public/images/users/
+```
+
+### ❌ **Error de Composer**
+```bash
+# Reinstalar dependencias
+composer install --no-dev --optimize-autoloader
+```
+
+### ❌ **Error de Virtual Host**
+- **Laragon:** Reiniciar servicios
+- **XAMPP:** Verificar configuración de Apache
+- **Apache:** Verificar archivos de configuración
 
 ### 📱 Interfaz
 - Diseño responsive
